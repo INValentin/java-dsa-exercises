@@ -16,6 +16,9 @@ public class BinaryTree {
 
     private Node root;
 
+    public BinaryTree() {
+    }
+
     public BinaryTree(int rootValue) {
         this.root = new Node(rootValue);
     }
@@ -49,24 +52,19 @@ public class BinaryTree {
         }
 
         while (current != null) {
-            if (current.value == value) {
-                var leftNode = current.leftChild;
-                newNode.leftChild = leftNode;
-                current.leftChild = newNode;
-                return;
-            } else if (current.value > value) {
+            if (current.value < value) {
+                if (current.rightChild == null) {
+                    current.rightChild = newNode;
+                    return;
+                }
+                current = current.rightChild;
+            } else {
                 if (current.leftChild == null) {
                     current.leftChild = newNode;
                     return;
                 }
 
                 current = current.leftChild;
-            } else {
-                if (current.rightChild == null) {
-                    current.rightChild = newNode;
-                    return;
-                }
-                current = current.rightChild;
             }
         }
 
@@ -84,17 +82,26 @@ public class BinaryTree {
     }
 
     public void print() {
+        System.out.println();
         printNode(root, false, 0);
-        // LinkedList<Integer> q = new LinkedList<Integer>();
-        // var current = root;
-        // while (current.leftChild != null) {
-        // var rightValue = current.rightChild != null ? current.rightChild.value :
-        // Integer.MIN_VALUE;
-        // q.add(current.value);
-        // q.add(current.leftChild.value);
-        // q.add(rightValue);
-        // current = current.leftChild;
-        // }
+        System.out.println();
+    }
+
+    public boolean treeEqual(BinaryTree tree) {
+        return equals(root, tree.root);
+    }
+
+    private boolean equals(Node firstRoot, Node secondRoot) {
+        if (firstRoot == null && secondRoot == null)
+            return true;
+        if (firstRoot == null || secondRoot == null)
+            return false;
+
+        var rootEquals = firstRoot.value == secondRoot.value;
+
+        boolean leftEquals = rootEquals ? equals(firstRoot.leftChild, secondRoot.leftChild) : false;
+        boolean rightEquals = leftEquals ? equals(firstRoot.rightChild, secondRoot.rightChild) : false;
+        return (rootEquals && leftEquals && rightEquals);
     }
 
 }
