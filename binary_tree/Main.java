@@ -29,10 +29,16 @@ public class Main {
         binaryTree.insert(4);
         binaryTree.insert(0);
         binaryTree.insert(2);
-        // binaryTree.print();
+        binaryTree.insert(21);
+        binaryTree.insert(25);
+        binaryTree.insert(26);
+        binaryTree.insert(-1);
+        binaryTree.insert(30);
+        binaryTree.print();
 
-        thirdTree.print();
+        // thirdTree.print();
 
-        System.out.println(BinaryTree.validateBST(thirdTree));
+        System.out.println(BinaryTree.validateBST(binaryTree));
+        System.out.println(binaryTree.height());
     }
 }

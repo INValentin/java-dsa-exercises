@@ -145,4 +145,14 @@ public class BinaryTree {
         return false;
     }
 
+    public int height() {
+        return height(root);
+    }
+
+    private int height(Node root) {
+        if (root == null)
+            return 0;
+        return Math.max(height(root.leftChild), height(root.rightChild)) + 1;
+    }
+
 }
