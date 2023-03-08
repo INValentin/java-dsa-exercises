@@ -13,13 +13,12 @@ public class Main {
         secondTree.insert(9);
         secondTree.insert(13);
         secondTree.insert(0);
-        secondTree.print();
-        thirdTree.insert(4);
-        thirdTree.insert(3);
-        thirdTree.insert(9);
-        thirdTree.insert(0);
-        thirdTree.insert(13);
-        thirdTree.print();
+
+        thirdTree.insertNonBST(4);
+        thirdTree.insertNonBST(3);
+        thirdTree.insertNonBST(9);
+        thirdTree.insertNonBST(0);
+        thirdTree.insertNonBST(13);
 
         binaryTree.insert(2);
         binaryTree.insert(1);
@@ -30,7 +29,10 @@ public class Main {
         binaryTree.insert(4);
         binaryTree.insert(0);
         binaryTree.insert(2);
-        binaryTree.print();
-        System.out.println(secondTree.treeEqual(thirdTree));
+        // binaryTree.print();
+
+        thirdTree.print();
+
+        System.out.println(BinaryTree.validateBST(thirdTree));
     }
 }

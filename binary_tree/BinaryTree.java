@@ -70,6 +70,29 @@ public class BinaryTree {
 
     }
 
+    public void insertNonBST(int value) {
+        var current = root;
+        var newNode = new Node(value);
+
+        if (current == null) {
+            root = newNode;
+            return;
+        }
+
+        while (current != null) {
+            if (current.leftChild == null) {
+                current.leftChild = newNode;
+                return;
+            }
+            if (current.rightChild == null) {
+                current.rightChild = newNode;
+                return;
+            }
+            current = current.leftChild != null ? current.leftChild : current.rightChild;
+        }
+
+    }
+
     private void printNode(Node node, boolean isLeft, int depth) {
         if (node == null)
             return;
@@ -88,6 +111,8 @@ public class BinaryTree {
     }
 
     public boolean treeEqual(BinaryTree tree) {
+        if (root == null)
+            return true;
         return equals(root, tree.root);
     }
 
@@ -102,6 +127,22 @@ public class BinaryTree {
         boolean leftEquals = rootEquals ? equals(firstRoot.leftChild, secondRoot.leftChild) : false;
         boolean rightEquals = leftEquals ? equals(firstRoot.rightChild, secondRoot.rightChild) : false;
         return (rootEquals && leftEquals && rightEquals);
+    }
+
+    public static boolean validateBST(BinaryTree tree) {
+        if (tree == null)
+            return true;
+        return validateNode(tree.root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    private static boolean validateNode(Node node, int min, int max) {
+        if (node == null)
+            return true;
+        if (node.value > max || node.value <= min)
+            return false;
+        if (validateNode(node.leftChild, min, node.value))
+            return validateNode(node.rightChild, node.value, max);
+        return false;
     }
 
 }
