@@ -31,33 +31,57 @@ public class AVLTree {
         else
             node.rightChild = insertNode(node.rightChild, value);
 
-        var leftHeight = nodeHeight(node.leftChild);
-        var rightHeight = nodeHeight(node.rightChild);
-
-        balance(node);
-        node.height = Math.max(leftHeight, rightHeight) + 1;
-        return node;
+        setHeight(node);
+        return balance(node);
     }
 
-    private void balance(AVLNode node) {
+    private AVLNode balance(AVLNode node) {
         if (isLeftHeavy(node)) {
             if (getBalanceFactor(node.leftChild) < 0)
-                System.out.println("left rotation " + node.leftChild.value);
-            System.out.println("right rotation " + node.value);
+                node.leftChild = leftRotate(node.leftChild);
+            return rightRotate(node);
         }
         if (isRightHeavy(node)) {
             if (getBalanceFactor(node.rightChild) > 0)
-                System.out.println("right rotation " + node.rightChild.value);
-            System.out.println("left rotation " + node.value);
+                node.rightChild = rightRotate(node.rightChild);
+            return leftRotate(node);
         }
+
+        return node;
+    }
+
+    private AVLNode leftRotate(AVLNode node) {
+        var newRoot = node.rightChild;
+
+        node.rightChild = newRoot.leftChild;
+        newRoot.leftChild = node;
+
+        setHeight(node);
+        setHeight(newRoot);
+        return newRoot;
+    }
+
+    private void setHeight(AVLNode node) {
+        node.height = Math.max(nodeHeight(node.leftChild), nodeHeight(node.rightChild)) + 1;
+    }
+
+    private AVLNode rightRotate(AVLNode node) {
+        var newRoot = node.leftChild;
+
+        node.leftChild = newRoot.rightChild;
+        newRoot.rightChild = node;
+
+        setHeight(node);
+        setHeight(newRoot);
+        return newRoot;
     }
 
     private void printNode(AVLNode node, boolean isLeft, int depth) {
         if (node == null)
             return;
         printNode(node.rightChild, false, depth + 1);
-        System.out.print("   ".repeat(depth));
-        System.out.print("(" + getBalanceFactor(node) + ") - ");
+        System.out.print(" - ".repeat(depth));
+        System.out.print("|" + nodeHeight(node) + "| ");
         System.out.print(node.value);
         System.out.println();
         printNode(node.leftChild, true, depth + 1);

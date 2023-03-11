@@ -1,0 +1,97 @@
+10
+   20
+      30 # Left rotate 10 to the left of 20
+
+
+      30 # Right rotate 30 to the right of 20
+   20
+10     
+
+
+10 (right heavy)
+   30 (1) 
+20      # Right rotate 30 to the right of 20 
+----
+10
+   20
+     30 # Left rotate 10 to the left of 20
+
+
+     30
+10
+     20 # Left rotate 10 to the left of 20
+----
+     30
+   20
+10      # Right rotate 30 to the right of 20
+
+
+   10
+      20
+5        30 
+            40 
+               50 # example
+
+
+
+   10
+5     20         
+         40
+      30    50
+
+   10
+5     20
+         30 
+            40    
+               50
+^
+|
+   10
+5      30
+   20      40
+               50
+
+      20
+   10    30
+5           40
+               50
+         30
+      20    40
+   10            50
+5
+
+      30
+   10    40 
+5     20    50
+
+---
+      30
+   10    40
+5     20     50
+
+---
+
+
+   10
+5      20
+           40
+
+     20
+   10
+5 
+
+   10
+5      40 
+   20      30
+              50
+  
+
+
+
+
+------
+
+   10
+5     20
+         40
+            50
