@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Heap {
     private int count = 0;
-    private int[] elements = new int[10];
+    private int[] elements = new int[20];
 
     private boolean isEmpty() {
         return count == 0;
@@ -23,6 +23,18 @@ public class Heap {
 
     }
 
+    public static int kthLargest(int[] arr, int k) {
+        var heap = new Heap();
+        for (int el : arr) {
+            heap.insert(el);
+        }
+
+        for (int i = 1; i < k; i++) {
+            heap.remove();
+        }
+        return heap.remove();
+    }
+
     private int childValue(int index) {
         return (index + 1 > count) ? Integer.MIN_VALUE : elements[index];
     }
@@ -35,10 +47,10 @@ public class Heap {
         return (childIndex - 1) / 2;
     }
 
-    private void swap(int childIndex, int parentIndex) {
-        var temp = elements[childIndex];
-        elements[childIndex] = elements[parentIndex];
-        elements[parentIndex] = temp;
+    private void swap(int firstIndex, int secondIndex) {
+        var temp = elements[firstIndex];
+        elements[firstIndex] = elements[secondIndex];
+        elements[secondIndex] = temp;
     }
 
     private void bubbleup() {
@@ -64,20 +76,26 @@ public class Heap {
     }
 
     private void bubbleDown() {
-        var index = 0;
-        var val = elements[index];
+        var currentIndex = 0;
+        var largestIndex = 0;
 
         while (true) {
-            if (val < childValue(leftChildIndex(index))) {
-                swap(leftChildIndex(index), index);
-                index = leftChildIndex(index);
-            } else if (val < childValue(rightChildIndex(index))) {
-                swap(rightChildIndex(index), index);
-                index = rightChildIndex(index);
-            } else {
+            var leftIndex = leftChildIndex(currentIndex);
+            var rightIndex = rightChildIndex(currentIndex);
+            largestIndex = currentIndex;
+            if (elements[largestIndex] < elements[leftIndex]) {
+                largestIndex = leftIndex;
+            }
+            if (elements[largestIndex] < elements[rightIndex]) {
+                largestIndex = rightIndex;
+            }
+
+            if (currentIndex == largestIndex) {
                 break;
             }
-            val = elements[index];
+
+            swap(currentIndex, largestIndex);
+            currentIndex = largestIndex;
         }
     }
 
