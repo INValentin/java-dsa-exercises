@@ -1,9 +1,11 @@
 package trie;
 
+import java.util.HashMap;
+
 public class Trie {
     private class Node {
         char value;
-        Node[] children = new Node[26];
+        private HashMap<Character, Node> children = new HashMap<>();
         boolean isEndOfWord = false;
 
         Node() {
@@ -11,6 +13,31 @@ public class Trie {
 
         Node(char value) {
             this.value = value;
+        }
+
+        public boolean hasChild(char character) {
+            return children.containsKey(character);
+        }
+
+        public void addChild(char character, Node node) {
+            children.put(character, node);
+        }
+
+        public Node getChild(char character) {
+            return children.get(character);
+        }
+
+        public Node[] getChildren() {
+            return children.values().toArray(new Node[0]);
+        }
+
+        public void removeChild(char key) {
+            children.remove(key);
+        }
+
+        @Override
+        public String toString() {
+            return "value=" + this.value;
         }
     }
 
@@ -22,34 +49,42 @@ public class Trie {
 
     public void insert(String word) {
         var current = root;
-        int index = 0;
-        for (char character : word.toCharArray()) {
-            index = character - 'a';
-            if (current.children[index] == null) {
-                Node newNode = new Node(character);
-                current.children[index] = newNode;
+        for (char ch : word.toCharArray()) {
+            if (!current.hasChild(ch)) {
+                current.addChild(ch, new Node(ch));
             }
-            current = current.children[index];
+            current = current.getChild(ch);
         }
-        if (current != null)
-            current.isEndOfWord = true;
+        current.isEndOfWord = true;
     }
 
-    private void printNode(Node node, boolean isLeft, int depth) {
-        if (node == null)
-            return;
-        System.out.print("|-".repeat(depth));
-        for (int i = 0; i < 26; i++) {
-            printNode(node.children[i], false, depth + 1);
+    public boolean contains(String word) {
+        var current = root;
+        for (char ch : word.toCharArray()) {
+            if (!current.hasChild(ch)) {
+                return false;
+            }
+            current = current.getChild(ch);
         }
-        System.out.println(node.value);
-        System.out.println();
-
+        return current.isEndOfWord;
     }
 
-    public void print() {
-        System.out.println();
-        printNode(root, false, 0);
-        System.out.println();
+    public void remove(String word) {
+        remove(root, -1, word);
     }
+
+    private boolean remove(Node node, int index, String word) {
+        if (index == word.length() - 1) {
+            node.isEndOfWord = false;
+            return node.getChildren().length == 0;
+        }
+        var child = node.getChild(word.charAt(index + 1));
+        var hasNoChildren = remove(child, index + 1, word);
+        if (hasNoChildren) {
+            node.removeChild(word.charAt(index + 1));
+            return node.getChildren().length == 0 && !node.isEndOfWord;
+        }
+        return false;
+    }
+
 }
