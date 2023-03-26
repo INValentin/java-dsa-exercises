@@ -1,5 +1,6 @@
 package trie;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Trie {
@@ -85,6 +86,28 @@ public class Trie {
             return node.getChildren().length == 0 && !node.isEndOfWord;
         }
         return false;
+    }
+
+    public ArrayList<String> autoComplete(String prompt) {
+        var results = new ArrayList<String>();
+        autoComplete(root, 0, prompt, results);
+        return results;
+    }
+
+    private void autoComplete(Node root, int index, String prompt, ArrayList<String> results) {
+        if (index < prompt.length()) {
+            var ch = prompt.charAt(index);
+            if (root.hasChild(ch))
+                autoComplete(root.getChild(ch), index + 1, prompt, results);
+            return;
+        }
+        prompt += index != prompt.length() ? String.valueOf(root.value) : "";
+
+        if (root.isEndOfWord)
+            results.add(prompt);
+        for (Node child : root.getChildren()) {
+            autoComplete(child, index + 1, prompt, results);
+        }
     }
 
 }
