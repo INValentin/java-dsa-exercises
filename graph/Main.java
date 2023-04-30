@@ -1,5 +1,7 @@
 package graph;
 
+import javax.xml.transform.Source;
+
 /**
  * Main
  */
@@ -20,16 +22,28 @@ public class Main {
 
         WeightedGraph wGraph = new WeightedGraph();
         wGraph.addNode("A");
-        wGraph.addNode("X");
         wGraph.addNode("B");
-        wGraph.addNode("P");
-        wGraph.addEdge("X", "A", 1);
-        wGraph.addEdge("X", "B", 1);
-        wGraph.addEdge("A", "P", 3);
-        wGraph.addEdge("B", "P", 5);
-        wGraph.addEdge("X", "P", 2);
-        var path = wGraph.getShortestPath("X", "P");
-        System.out.println(path);
+        wGraph.addNode("C");
+        wGraph.addNode("D");
+
+        wGraph.addEdge("A", "B", 3);
+        wGraph.addEdge("B", "C", 2);
+        wGraph.addEdge("B", "D", 4);
+        wGraph.addEdge("A", "C", 1);
+        wGraph.addEdge("D", "C", 5);
+
+        wGraph.print();
+
+        wGraph.minSpanningTree().print();
+
+        // wGraph.addEdge("A", "P", 3);
+
+        // var path = wGraph.getShortestPath("A", "B");
+        // System.out.println(path);
+        // wGraph.print();
+
+        // var hasCycle = wGraph.hasCycle();
+        // System.out.println("Has Cycle: " + hasCycle);
         // wGraph.print();
         // graph.print();
 

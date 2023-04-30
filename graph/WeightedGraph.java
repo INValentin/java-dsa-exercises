@@ -131,4 +131,55 @@ public class WeightedGraph {
         return list;
     }
 
+    private boolean hasCycle(Node node, Set<Node> visited, Node parent) {
+        visited.add(node);
+
+        for (Edge edge : node.getEdges()) {
+            if (visited.contains(edge.to)) {
+                if (edge.to != parent)
+                    return true;
+            } else if (hasCycle(edge.to, visited, node))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean hasCycle() {
+        Set<Node> visited = new HashSet<>();
+
+        for (Node node : nodes.values()) {
+            if (!visited.contains(node) && hasCycle(node, visited, null))
+                return true;
+        }
+        return false;
+    }
+
+    public WeightedGraph minSpanningTree() {
+        PriorityQueue<Edge> queue = new PriorityQueue<>(Comparator.comparingInt(e -> e.weight));
+        var tree = new WeightedGraph();
+
+        var startNode = nodes.values().iterator().next();
+        tree.addNode(startNode.label);
+        queue.addAll(startNode.getEdges());
+
+        while (tree.nodes.size() < nodes.size()) {
+            var minEdge = queue.poll();
+            if (tree.nodes.containsKey(minEdge.to.label))
+                continue;
+
+            var current = minEdge.from;
+            tree.addNode(current.label);
+            tree.addNode(minEdge.to.label);
+            tree.addEdge(current.label, minEdge.to.label, minEdge.weight);
+
+            for (Edge edge : minEdge.to.getEdges()) {
+                if (!tree.nodes.containsKey(edge.to.label))
+                    queue.add(edge);
+            }
+
+        }
+
+        return tree;
+    }
+
 }
